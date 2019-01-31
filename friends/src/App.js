@@ -3,28 +3,28 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import logo from "./logo.svg";
 import "./App.css";
 
 import { fetchFriends } from "./actions";
-import { addNewFriend } from "./actions";
-import Friends from "./components/Friends";
-import FriendForm from "./components/FriendForm";
+import { addFriend } from "./actions";
+import FriendsList from "./components/friendsList";
+import FriendsForm from "./components/friendsForm";
 
 class App extends Component {
+
   componentDidMount() {
     this.props.fetchFriends();
   }
 
   render() {
     return (
-      <div className="App">
+      <div>
         {this.props.fetchingFriends ? (
-          <img src={logo} className="App-logo" alt="logo" />
+        <h2> Fetching your Friends... </h2>
         ) : (
           <div>
-            <Friends {...this.props} />
-            <FriendForm {...this.state} />
+            <FriendsList {...this.props} />
+            <FriendsForm {...this.state} />
           </div>
         )}
       </div>
@@ -42,4 +42,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { fetchFriends, addNewFriend })(App);
+export default connect(mapStateToProps, { fetchFriends, addFriend })(App);
