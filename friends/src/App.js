@@ -1,31 +1,45 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+// change made for commit purposes https://github.com/JamieHall1962/Redux-Friends/pull/1
 
-// change made for commit purposes
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
+import logo from "./logo.svg";
+import "./App.css";
+
+import { fetchFriends } from "./actions";
+import { addNewFriend } from "./actions";
+import Friends from "./components/Friends";
+import FriendForm from "./components/FriendForm";
 
 class App extends Component {
+  componentDidMount() {
+    this.props.fetchFriends();
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
+        {this.props.fetchingFriends ? (
           <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        ) : (
+          <div>
+            <Friends {...this.props} />
+            <FriendForm {...this.state} />
+          </div>
+        )}
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    friends: state.friends,
+    fetchingFriends: state.fetchingFriends,
+    friendAdded: state.friendAdded,
+    error: state.error
+  };
+};
+
+export default connect(mapStateToProps, { fetchFriends, addNewFriend })(App);
